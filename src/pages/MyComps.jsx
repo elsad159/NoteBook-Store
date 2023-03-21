@@ -6,12 +6,21 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import PopUp from "../components/Modal";
 import { useState } from "react";
+import Modal from "react-bootstrap/Modal";
 
 const MyComps = () => {
   const [show, setShow] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [showImage, setShowImage] = useState("");
+  const products = JSON.parse(localStorage.getItem("notebooks"));
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const closeModal = () => setOpen(false);
+  const openModal = (img) => {
+    setOpen(true);
+    setShowImage(img);
+  };
   return (
     <div className="mycomps-container">
       <div className="header">
@@ -19,7 +28,7 @@ const MyComps = () => {
           className="line bg-light my-3 w-100"
           style={{ height: "1px" }}
         ></div>
-        <Link>
+        <Link to="/">
           <Button variant="warning mx-4">Esas sehife</Button>
         </Link>
         <Link>
@@ -33,6 +42,18 @@ const MyComps = () => {
           style={{ height: "1px" }}
         ></div>
       </div>
+      <Modal show={open} onHide={closeModal}>
+        <Modal.Header closeButton>
+        </Modal.Header>
+        <Modal.Body>
+          <img
+            src={showImage && showImage}
+            alt="image"
+            width={90}
+            height={90}
+          />
+        </Modal.Body>
+      </Modal>
       <div className="body ">
         <div className="selectAndSearch my-4 d-flex justify-content-between">
           <div className="select d-flex align-items-center">
@@ -60,6 +81,7 @@ const MyComps = () => {
             </InputGroup>
           </div>
         </div>
+
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
@@ -71,24 +93,23 @@ const MyComps = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td colSpan={2}>Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
+            {products !== null &&
+              products.length > 0 &&
+              products.map((product, index) => (
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>{product.category}</td>
+                  <td onClick={() => openModal(product.shekil)}>
+                    <img
+                      style={{ width: "30px", height: "30px" }}
+                      src={product.shekil}
+                      alt={product.category}
+                    />
+                  </td>
+                  <td>{product.price}</td>
+                  <td>{product.emeliyatSistemis}</td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </div>

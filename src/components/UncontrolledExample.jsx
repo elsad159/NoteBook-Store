@@ -4,12 +4,25 @@ import Slide2Image from "../assets/slide2.jpg";
 import Slide3Image from "../assets/slide3.jpg";
 import Slide4Image from "../assets/slide4.jpg";
 import Slide5Image from "../assets/slide5.webp";
+import { Button } from "react-bootstrap";
 
 function UncontrolledExample() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    location.reload();
+  };
   return (
     <>
       <div className="px-4">
-        <h1>UserName: </h1>
+        <h1>
+          UserName:{user && user}{" "}
+          {user && (
+            <Button className="mx-3" onClick={handleLogout}>
+              Logout
+            </Button>
+          )}
+        </h1>
         <div
           className="line bg-light my-3 w-100"
           style={{ height: "1px" }}

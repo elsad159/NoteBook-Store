@@ -3,8 +3,30 @@ import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const loginUsername = useRef();
+  const loginPassword = useRef();
+  const navigation = useNavigate();
+
+  const getUsers = JSON.parse(localStorage.getItem("registerUsers"));
+  console.log(getUsers);
+  const loginButton = () => {
+    const chekUsers = getUsers.find(
+      (user) => user.username == loginUsername.current.value
+    );
+    console.log(getUsers.find((user) => user.username));
+    if (chekUsers != undefined) {
+      navigation("/");
+      localStorage.setItem("user", JSON.stringify(chekUsers.username));
+      location.reload();
+    } else {
+      alert("Bele bir istifadechi geyde alinmayib");
+    }
+  };
+
   return (
     <div className="container border w-50 p-3">
       <section className="header d-flex justify-content-start flex-column align-items-start">
@@ -26,6 +48,7 @@ const Login = () => {
           <p>Istifadecinin adi:</p>
           <InputGroup className="mb-3">
             <Form.Control
+              ref={loginUsername}
               placeholder="Username"
               aria-label="Username"
               aria-describedby="basic-addon1"
@@ -36,6 +59,7 @@ const Login = () => {
           <p>Shifre:</p>
           <InputGroup className="mb-3">
             <Form.Control
+              ref={loginPassword}
               type="password"
               placeholder="Password"
               aria-label="Password"
@@ -43,7 +67,9 @@ const Login = () => {
             />
           </InputGroup>
         </div>
-        <Button variant="success">Hesaba daxil ol</Button>
+        <Button onClick={loginButton} variant="success">
+          Hesaba daxil ol
+        </Button>
         <div
           className="line bg-light my-3 w-100"
           style={{ height: "1px" }}

@@ -1,3 +1,13 @@
 .modal-dialog {
   max-width: 950px !important;
 }
+.cardLyrics {
+  font-size: 12px !important;
+}
+.card:hover {
+  cursor: pointer !important;
+}
+.card:hover > .cardImage {
+  transform: scale(1.33);
+  transition: 1s all ease;
+}
